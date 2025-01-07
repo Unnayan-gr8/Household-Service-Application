@@ -1,0 +1,97 @@
+{% extends "professional_layout.html" %}
+{% block content %}
+  <div class="container my-5">
+    <!-- Search Form Section -->
+    <form action="" method="POST">
+      <div class="row g-3 align-items-center">
+        <div class="col-auto">
+          <label for="searchtype" class="col-form-label">Search by:</label>
+        </div>
+        <div class="col-auto">
+          <select name="servicetype" id="servicetype" class="form-select">
+            <option value="date">Request Date</option>
+            <option value="location">Customer Address</option>
+            <option value="name">Customer Name</option>
+            <option value="pincode">Customer Pincode</option>
+          </select>
+        </div>
+      </div>
+      <div class="row g-3 align-items-center mt-3">
+        <div class="col-auto">
+          <label for="search" class="col-form-label">Search term:</label>
+        </div>
+        <div class="col-auto">
+          <input type="search" name="search" id="search" class="form-control" placeholder="Enter search text">
+        </div>
+      </div>
+      <div class="col-12 mt-3">
+        <button class="btn btn-primary" type="submit">Search</button>
+      </div>
+    </form>
+
+    <!-- Display Search Results -->
+    {% if st == "SR" %}
+      <h2 class="mt-5">Service Requests</h2>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Customer Name</th>
+            <th scope="col">Contact Number</th>
+            <th scope="col">Location</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if requests %}
+            {% for request in requests %}
+              <tr>
+                <th scope="row">{{ request.id }}</th>
+                <td>{{ request.customers.first_name }} {{ request.customers.last_name }}</td>
+                <td>{{ request.customers.contact_number }}</td>
+                <td>{{ request.customers.address }} {{ request.customers.pincode }}</td>
+                <td>{{ request.date_of_request }}</td>
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="5" class="text-center">No results found</td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    {% endif %}
+
+    {% if st == "C" %}
+      <h2 class="mt-5">Closed Requests</h2>
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Customer Name</th>
+            <th scope="col">Contact Number</th>
+            <th scope="col">Location</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if requests %}
+            {% for request in requests %}
+              <tr>
+                <th scope="row">{{ request.id }}</th>
+                <td>{{ request.customers.first_name }} {{ request.customers.last_name }}</td>
+                <td>{{ request.customers.contact_number }}</td>
+                <td>{{ request.customers.address }} {{ request.customers.pincode }}</td>
+                <td>{{ request.date_of_request }}</td>
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr>
+              <td colspan="5" class="text-center">No results found</td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+{% endblock %}

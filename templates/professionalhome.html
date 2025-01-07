@@ -1,0 +1,82 @@
+{% extends "professional_layout.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <!-- Profile Link -->
+        <div class="mb-4">
+            <a href="/profile/{{ prof.id }}" class="btn btn-info btn-sm">Go to Profile</a>
+        </div>
+        <!-- Today's Services Section -->
+        <h1 class="mb-4">Today's Active Services</h1>
+        {% if services == [] %}
+            <p class="text-center">No Active Service Today !!!!</p>
+        {% else %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr class="table-dark">
+                            <th scope="col">ID</th>
+                            <th scope="col">Customer Name</th>
+                            <th scope="col">Service Name</th>
+                            <th scope="col">Service Description</th>
+                            <th scope="col">Contact Number</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for service in services %}
+                            <tr>
+                                <th scope="row">{{ service.id }}</th>
+                                <td>{{ service.customers.first_name }} {{ service.customers.last_name }}</td>
+                                <td>{{ service.service.name }}</td>
+                                <td>{{ service.service.description }}</td>
+                                <td>{{ service.customers.contact_number }}</td>
+                                <td>{{ service.customers.address }} {{ service.customers.pincode }}</td>
+                                <td>
+                                    <a href="/accept/{{ prof.id }}/{{ service.id }}" class="btn btn-success btn-sm">Accept</a>
+                                    <a href="/reject/{{ prof.id }}/{{ service.id }}" class="btn btn-danger btn-sm">Reject</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+        <!-- Closed Services Section -->
+        <h1 class="mt-5 mb-4">Closed Services</h1>
+        {% if closed_services == [] %}
+            <p class="text-center">No Service Completed till today !!!!</p>
+        {% else %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr class="table-dark">
+                            <th scope="col">ID</th>
+                            <th scope="col">Customer Name</th>
+                            <th scope="col">Contact Number</th>
+                            <th scope="col">Location</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Rating</th>
+                            <th scope="col">Remark</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for closed_service in closed_services %}
+                            <tr>
+                                <th scope="row">{{ closed_service.id }}</th>
+                                <td>{{ closed_service.customers.first_name }} {{ closed_service.customers.last_name }}</td>
+                                <td>{{ closed_service.customers.contact_number }}</td>
+                                <td>{{ closed_service.customers.address }} {{ closed_service.customers.pincode }}</td>
+                                <td>{{ closed_service.date_of_completion }}</td>
+                                <td>{{ closed_service.rating }}</td>
+                                <td>{{ closed_service.remark }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

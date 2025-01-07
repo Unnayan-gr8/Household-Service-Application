@@ -1,0 +1,75 @@
+{% extends "user_layout.html" %}
+
+{% block content %}
+  <!-- Profile Link Section -->
+  <div class="text-center my-4">
+    <a href="/user_profile/{{ user.id }}" class="btn btn-outline-primary btn-lg">Go to Profile</a>
+  </div>
+
+  <!-- Best Packages Section -->
+  <h1 class="text-center my-5 text-primary">Best {{ service.name }} Packages</h1>
+  <div class="row justify-content-center">
+    {% for s in services %}
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-light" style="border-radius: 12px; overflow: hidden;">
+          <div class="card-body">
+            <h5 class="card-title">{{ s.name }}</h5>
+            <p class="card-text">{{ s.description }}</p>
+            <p><strong>Time Required:</strong> {{ s.time_required }} hrs</p>
+            <p><strong>Price:</strong> ₹{{ s.base_price }}</p>
+            <a href="/book/{{ user.id }}/{{ s.id }}" class="btn btn-success w-100" style="border-radius: 25px;">Book Now</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Service History Section -->
+  <h1 class="text-center my-5 text-primary">Service History</h1>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover">
+      <thead class="table-light">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Service Name</th>
+          <th scope="col">Service Description</th>
+          <th scope="col">Professional Name</th>
+          <th scope="col">Contact Number</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      {% if requested_services %}
+        <tbody>
+          {% for service in requested_services %}
+            <tr>
+              <th scope="row">{{ service.id }}</th>
+              <td>{{ service.service.name }}</td>
+              <td>{{ service.service.description }}</td>
+              {% if service.service_professionals %}
+                <td>{{ service.service_professionals.first_name }} {{ service.service_professionals.last_name }}</td>
+                <td>{{ service.service_professionals.contact_number }}</td>
+              {% else %}
+                <td>Not Assigned</td>
+                <td>Not Assigned</td>
+              {% endif %}
+              {% if service.service_status == "accepted" %}
+                <td>
+                  <a href="/closeit/{{ user.id }}/{{ service.id }}" class="btn btn-danger">Close it?</a>
+                </td>
+              {% else %}
+                <td class="text-muted">{{ service.service_status }}</td>
+              {% endif %}
+            </tr>
+          {% endfor %}
+        </tbody>
+      {% else %}
+        <tbody>
+          <tr>
+            <td colspan="6" class="text-center">No service requests found.</td>
+          </tr>
+        </tbody>
+      {% endif %}
+    </table>
+  </div>
+</div>
+{% endblock %}

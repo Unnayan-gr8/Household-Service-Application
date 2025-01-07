@@ -1,0 +1,49 @@
+{% extends "user_layout.html" %}
+
+{% block content %}
+  <!-- Search Form Section -->
+  <div class="container my-5">
+    <form action="" method="POST">
+      <div class="row g-3 align-items-center">
+        <!-- Search by Label and Select -->
+        <div class="col-auto">
+          <label for="servicetype" class="col-form-label fs-5">Search by:</label>
+        </div>
+        <div class="col-auto">
+          <select name="servicetype" id="servicetype" class="form-select form-select-lg">
+            <option value="name">Service Name</option>
+            <option value="location">Address</option>
+            <option value="time">Time Required</option>
+            <option value="pincode">Pincode</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="row g-3 align-items-center mt-3">
+        <!-- Search Input -->
+        <div class="col-auto">
+          <input type="search" name="search" id="search" class="form-control form-control-lg" placeholder="Enter search text">
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="col-12 mt-4">
+        <button class="btn btn-primary btn-lg w-100" type="submit" style="border-radius: 30px;">Search</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Results Section -->
+  <div class="container my-5">
+    {% for s in requests %}
+      <div class="card mb-4 shadow-sm" style="border-radius: 15px;">
+        <div class="card-body">
+          <h5 class="card-title">{{ s.description }}</h5>
+          <p class="card-text"><strong>Time Required:</strong> {{ s.time_required }} hrs</p>
+          <p class="card-text"><strong>Price:</strong> ₹{{ s.base_price }}</p>
+          <a href="/book/{{ user.id }}/{{ s.id }}" class="btn btn-success btn-lg w-100" style="border-radius: 25px;">Book Now</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

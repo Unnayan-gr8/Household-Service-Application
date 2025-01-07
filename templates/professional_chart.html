@@ -1,0 +1,123 @@
+{% extends "professional_layout.html" %}
+
+{% block content %}
+    <style>
+        /* Container for both charts */
+        .chart-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;  /* Limit the width of the chart container */
+            margin: 0 auto;
+            padding: 20px;
+            flex-wrap: wrap; /* Ensures responsiveness */
+        }
+
+        /* Styling for individual chart sections */
+        .chart-container .chart {
+            width: 48%; /* Each chart will take 48% of the container width */
+            height: 400px;  /* Fixed height for both charts */
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Adds shadow around the charts */
+            padding: 20px;
+        }
+
+        /* Title styling for each chart */
+        .chart-title {
+            font-size: 22px;  /* Larger font size for titles */
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #343a40; /* Dark color for better contrast */
+        }
+
+        /* Ensures the pie chart canvas fits within the section */
+        .chart-container .chart canvas {
+            width: 100% !important;
+            max-width: 300px; /* Limit max width for the pie chart */
+            height: auto !important;
+            margin: 0 auto; /* Center the canvas */
+        }
+    </style>
+
+    <!-- Chart container with both Pie and Bar charts -->
+    <div class="chart-container">
+        <!-- Pie Chart for Customer Feedback -->
+        <div class="chart">
+            <p class="chart-title">Overall Customer Review</p>
+            <canvas id="donut-chart"></canvas>
+        </div>
+
+        <!-- Bar Chart for Service Request Summary -->
+        <div class="chart">
+            <p class="chart-title">Service Request Summary</p>
+            <canvas id="bar-chart"></canvas>
+        </div>
+    </div>
+
+    <!-- Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Pie Chart (Donut Chart) for Customer Review
+        var ctx1 = document.getElementById('donut-chart').getContext('2d');
+        var donutChart = new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                labels: ['Liking', 'Disliking'], // Labels for Pie chart
+                datasets: [{
+                    label: 'Customer Feedback',
+                    data: [{{ good }}, {{ bad }}],  // Dynamic data for 'good' and 'bad' ratings
+                    backgroundColor: ['#4CAF50', '#F44336'],  // Green for liking, Red for disliking
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'  // Position of the legend
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + '%'; // Show percentages
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Bar Chart for Service Request Summary
+        var ctx2 = document.getElementById('bar-chart').getContext('2d');
+        var barChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ["Accepted", "Closed", "Rejected"],  // Labels for the bar chart
+                datasets: [{
+                    label: 'Service Requests',
+                    data: [{{ accept }}, {{ closed }}, {{ reject }}],  // Dynamic data for accepted, closed, and rejected requests
+                    backgroundColor: '#FF9800',  // Orange color for bars
+                    borderColor: '#FF5722',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true  // Y-axis starts at zero
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'  // Position of the legend for the bar chart
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href='https://unpkg.com/boxicons/css/boxicons.min.css' rel='stylesheet'>
+        <title>Household Service Application</title>
+        <style>
+            *{
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: "Poppins", sans-serif
+            }
+
+            body{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                background: url(/static/bgimg.jpg) no-repeat;
+                background-size: cover;
+                background-position: center;
+            }
+
+            .complete{
+                width: 420px;
+                background: transparent;
+                border: 2px solid rgba(255, 255, 255, .2);
+                backdrop-filter: blur(20px);
+                box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+                color: #fff;
+                border-radius: 10px;
+                padding: 30px 40px;
+            }
+
+            .complete h1{
+                font-size: 36px;
+                text-align: center;
+            }
+
+            .complete .message{
+                font-size: 26px;
+                color: red;
+                text-align: center;
+            }
+
+            .complete .box{
+                width: 100%;
+                height: 50px;
+                margin: 30px 0;
+            }
+
+            .box {
+                width: 100%;
+                height: 50px;
+                margin: 30px 0;
+                position: relative; /* Allows positioning of the icon */
+            }
+
+            .box input {
+                width: 100%;
+                height: 100%;
+                background: transparent;
+                border: none;
+                outline: none;
+                border: 2px solid rgba(255, 255, 255, .2);
+                border-radius: 40px;
+                font-size: 16px;
+                color: #fff;
+                padding: 20px 45px 20px 20px; /* Extra right padding for the icon */
+            }
+
+            .box i {
+                position: absolute;
+                top: 50%;
+                right: 20px; /* Adjust distance from right */
+                transform: translateY(-50%);
+                font-size: 20px;
+                color: #f10a0a;
+                pointer-events: none; /* So the icon doesn't interfere with input */
+            }
+
+            .box select {
+                width: 100%;
+                background: transparent;
+                border: none;
+                outline: none;
+                border: 2px solid rgba(255, 255, 255, .2);
+                border-radius: 40px;
+                font-size: 16px;
+                color: #d60505;
+                padding: 12px 45px 12px 20px; /* Adjust padding */
+                height: auto; /* Remove fixed height */
+            }
+
+            .box select {
+                appearance: none; /* Remove default arrow */
+                background: transparent url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj4KPHBhdGggZD0iTTEwMCA0MEg2MEwyMCA1MEw3MCA2MEgxMDAiIGZpbGw9IiMzMzMiLz4KPC9zdmc+Cg==') no-repeat right center;
+                background-size: 20px;
+                background-color: #d60505;
+            }
+
+            .box input::placeholder{
+                color : #fff;
+            }
+
+            .box select{
+                color : #fff;
+            }
+
+
+            .complete .new-User-Professional{
+                display: flex;
+                justify-content: space-between;
+                font-size: 14.5px;
+                margin: -15px 0 15px;
+            }
+
+            .new-User-Professional lable input{
+                accent-color: #171719;
+                margin-right: 3px;
+            }
+
+            .new-User-Professional a{
+                color: #b5d71e;
+                text-decoration: none;
+            }
+
+            .new-User-Professional a:hover{
+                text-decoration: underline;
+            }
+
+            .complete .button{
+                width: 100%;
+                height: 45px;
+                background: #fff;
+                border: none;
+                outline: none;
+                border-radius: 40px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, .1);
+                cursor: pointer;
+                font-size: 10px;
+                color: #333;
+                font-weight: 600;
+            }
+
+            .complete .admin-login{
+                font-size: #fff;
+                text-align: center;
+                margin: 20px 0 15px;
+            }
+
+            .admin-login p a{
+                color: #fff;
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+            .admin-login p a:hover{
+                text-decoration: underline;
+            }
+
+            h1{
+                text-align: center;
+                color: aqua;
+            }
+
+            h3{
+                text-align: center;
+                color: aqua;
+            }
+        </style>
+    </head>
+    <body>
+        <div class = "complete">
+            {% if message != None %}
+                <div class="message">{{ message }}</div>
+            {% endif %}
+            <h1>Household Service Application</h1>
+            <br>
+            <h3>Login</h3>
+            <form action = "/" method = "POST">
+                <div class = "box">
+                    <input type = "text" id="email_id" name="email_id" placeholder = "Username" required>
+                    <i class='bx bxs-user-pin' ></i>
+                </div>
+                <div class = "box">
+                    <input type = "password" id="password" name="password" placeholder = "Password" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+                <div class = "new-User-Professional">
+                    <a href = "/create">New User? Sign Up</a>
+                    <p>Register as <a href = "/register">Professional</a></p>
+                </div>
+                <button type = "submit" class = "button">Log In</button>
+            </form>
+        </div>
+    </body>
+</html>

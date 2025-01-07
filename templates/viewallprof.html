@@ -1,0 +1,260 @@
+{% extends "admin_layout.html" %}
+
+{% block content %}
+    <style>
+        /* General Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Container for main content */
+        .container {
+            width: 90%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;  /* Prevent overflow of elements */
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            table-layout: fixed;  /* Fix table layout to prevent overflow */
+            overflow: hidden;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            word-wrap: break-word; /* Ensure long text wraps in each cell */
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        /* Status Column Color Coding */
+        .approved {
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .pending {
+            background-color: #ffc107;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .rejected {
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        /* Rating Column Color Coding */
+        .high-rating {
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .medium-rating {
+            background-color: #ffc107;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .low-rating {
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        /* Button Styling */
+        .resume-btn, .approve-btn, .delete-btn {
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .resume-btn {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .resume-btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .approve-btn {
+            background-color: #FF9800;
+            color: white;
+        }
+
+        .approve-btn:hover {
+            background-color: #FF5722;
+            transform: scale(1.05);
+        }
+
+        .delete-btn {
+            background-color: #F44336;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background-color: #D32F2F;
+            transform: scale(1.05);
+        }
+
+        /* Centering the Go Back Link */
+        .go-back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .go-back-link a {
+            font-size: 18px;
+            color: #28a745;
+            text-decoration: none;
+            font-weight: bold;
+            border: 2px solid #28a745;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .go-back-link a:hover {
+            background-color: #28a745;
+            color: white;
+        }
+
+        /* Ensure responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                padding: 10px;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            .resume-btn, .approve-btn, .delete-btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+
+            .go-back-link a {
+                font-size: 16px;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+
+    <div class="container">
+        <h1>Service Professional Directory</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email ID</th>
+                    <th>Name</th>
+                    <th>Date Created</th>
+                    <th>Description</th>
+                    <th>Service</th>
+                    <th>Experience</th>
+                    <th>Address</th>
+                    <th>Contact No.</th>
+                    <th>Status</th>
+                    <th>Rating</th>
+                    <th>Resume</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for prof in prof %}
+                    <tr>
+                        <td>{{ prof.id }}</td>
+                        <td>{{ prof.email_id }}</td>
+                        <td>{{ prof.first_name }} {{ prof.last_name }}</td>
+                        <td>{{ prof.date_created }}</td>
+                        <td>{{ prof.description }}</td>
+                        <td>{{ prof.service_type }}</td>
+                        <td>{{ prof.experience }}</td>
+                        <td>{{ prof.address }} {{ prof.pincode }}</td>
+                        <td>{{ prof.contact_number }}</td>
+                        <td class="{% if prof.status == 'Approved' %}approved{% elif prof.status == 'Pending' %}pending{% else %}rejected{% endif %}">
+                            {{ prof.status }}
+                        </td>
+                        <td class="{% if prof.rating >= 8 %}high-rating{% elif prof.rating >= 5 %}medium-rating{% else %}low-rating{% endif %}">
+                            {{ prof.rating }}
+                        </td>
+                        <td>
+                            <button class="resume-btn" onclick="window.open('/service%20Professional%20Resume/{{ prof.documentname }}', '_blank')">View Resume</button>
+                        </td>                                       
+                        <td class="action-buttons">
+                            {% if prof.status == 'Approved' %}
+                                <form action="/del_sp/{{ prof.id }}" method="POST">
+                                    <button type="submit" class="delete-btn">Delete</button>
+                                </form>
+                            {% else %}
+                                <button class="approve-btn">Approve</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Go Back Link -->
+    <div class="go-back-link">
+        <a href="/home">Go Back</a>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends "admin_layout.html"%}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Service List Section -->
+    <h2 class="text-center mb-4 heading-style">Service List</h2>
+    <div class="row">
+        {% if services %}
+            {% for service in services %}
+                <div class="col-lg-4 col-md-6 mb-3">
+                    <div class="card border-primary" style="max-width: 540px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="/static/{{ service.photo }}" class="img-fluid rounded-start" alt="Couldn't Find Photo">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">ID : <a href="/service/{{service.id}}"> {{ service.id }}</a></h5>
+                                    <h5 class="card-title">Name : {{ service.name }}</h5>
+                                    <h5 class="card-title">Base Price : ₹{{ service.base_price }}</h5>
+                                    <h5 class="card-title">Description : {{ service.description }}</h5>
+                                    <h5 class="card-title">
+                                        Action : 
+                                        <a href="/service/update/{{ service.id }}" class="btn btn-warning btn-sm">Edit</a> | 
+                                        <a href="/service/delete/{{ service.id }}" class="btn btn-danger btn-sm">Delete</a>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <h2 class="text-center">No Service Listed! Add a Service using "+ Add Service"</h2>
+        {% endif %}
+    </div>
+    <div class="text-center mb-4">
+        <a href="/new" class="btn btn-success">+ Add Service</a>
+    </div>
+
+    <!-- Professional List Section -->
+    <h2 class="text-center mb-4 heading-style">Professional List</h2>
+    <div class="row">
+        {% if professionals %}
+            {% for prof in professionals %}
+                <div class="col-lg-4 col-md-6 mb-3">
+                    <div class="card border-secondary" style="max-width: 540px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                        <div class="row g-0">
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">ID : <a href="/professional/{{prof.id}}"> {{prof.id}}</a></h5>
+                                    <h5 class="card-title">Name : {{ prof.first_name }} {{ prof.last_name }}</h5>
+                                    <h5 class="card-title">Experience : {{ prof.experience }} years</h5>
+                                    <p class="card-text">Service Name : {{ prof.service.name }}</p>
+                                    <h5 class="card-title">
+                                        Action : 
+                                        <div class="d-flex">
+                                            <a href="/professional/approve/{{ prof.id }}" class="btn btn-success btn-sm mr-2">Approve</a>
+                                            <a href="/professional/reject/{{ prof.id }}" class="btn btn-danger btn-sm mr-2">Reject</a> 
+                                            <a href="/professional/delete/{{ prof.id }}" class="btn btn-warning btn-sm">Delete</a>
+                                        </div>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <h2 class="text-center">No Professional Pending</h2>
+        {% endif %}
+        <div class="text-center mb-4">
+            <a href="/view" class="btn btn-success">View All Professionals</a>
+        </div>
+    </div>
+
+    <!-- Service Requests Section -->
+    <h2 class="text-center mb-4 heading-style">Service Request List</h2>
+    <div class="row">
+        {% if requests %}
+            {% for service in requests %}
+                <div class="col-lg-4 col-md-6 mb-3">
+                    <div class="card border-info" style="max-width: 540px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="/static/{{ service.service.photo }}" class="img-fluid rounded-start" alt="Couldn't Find Photo">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">ID : {{ service.id }}</h5>
+                                    {% if not service.service_professionals.first_name %}
+                                        <h5 class="card-title">Assigned Professional: Not Assigned Yet</h5>
+                                    {% else %}
+                                        <h5 class="card-title">Assigned Professional: {{ service.service_professionals.first_name }} {{ service.service_professionals.last_name }}</h5>
+                                    {% endif %}
+                                    <h5 class="card-title">Date of Request : {{ service.date_of_request }}</h5>
+                                    <h5 class="card-text">Status : {{ service.service_status }}</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <h2 class="text-center">No Service Requests Listed Yet</h2>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

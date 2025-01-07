@@ -1,0 +1,116 @@
+{% extends "admin_layout.html" %}
+
+{% block content %}
+    <style>
+        .chart-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .chart-container .chart {
+            width: 48%;
+            height: 400px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .chart-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Make sure the pie chart is not too large */
+        .chart-container .chart canvas {
+            width: 100% !important;
+            max-width: 300px; /* Limit max width for the pie chart */
+            height: auto !important;
+            margin: 0 auto; /* Center the canvas */
+        }
+    </style>
+
+    <div class="chart-container">
+        <!-- Pie Chart Section -->
+        <div class="chart">
+            <p class="chart-title">Overall Customer Review</p>
+            <canvas id="donut-chart"></canvas>
+        </div>
+
+        <!-- Bar Chart Section -->
+        <div class="chart">
+            <p class="chart-title">Service Request Summary</p>
+            <canvas id="bar-chart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Pie Chart (Donut Chart)
+        var ctx1 = document.getElementById('donut-chart').getContext('2d');
+        var donutChart = new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                labels: ['Liking', 'Disliking'], // Labels for the Pie chart
+                datasets: [{
+                    label: 'Customer Feedback',
+                    data: [{{ good }}, {{ bad }}], // Replace with dynamic data
+                    backgroundColor: ['#4CAF50', '#F44336'], // Colors for each section
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Bar Chart
+        var ctx2 = document.getElementById('bar-chart').getContext('2d');
+        var barChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ["Requested", "Accepted", "Closed"], // Categories for the Bar chart
+                datasets: [{
+                    label: 'Service Requests',
+                    data: [{{ service_request }}, {{ accepted_request }}, {{ closed_request }}], // Replace with dynamic data
+                    backgroundColor: '#FF9800', // Color of the bars
+                    borderColor: '#FF5722',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}
