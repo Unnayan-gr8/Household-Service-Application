@@ -3,3 +3,4 @@ Werkzeug==2.2.2
 Flask-RESTful==0.3.10
 passlib==1.7.4
 flask_sqlalchemy==2.0.0
+flask.ext==2.0.0
