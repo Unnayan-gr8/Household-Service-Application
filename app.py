@@ -7,11 +7,10 @@ from passlib.hash import sha256_crypt
 from backend.api_models import *
 from backend.models import db
 
-api = Api()  # Initialize the API instance
+app = Flask(__name__)
 
 def setup_app():
-    global app  # Use the global app variable so it's accessible throughout the code
-    app = Flask(__name__)
+    
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///householddb.sqlite3"
     db.init_app(app)
     api.init_app(app)
